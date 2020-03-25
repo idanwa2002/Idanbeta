@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1006146655547",
+    "firebase_url": "https://idanbeta.firebaseio.com",
+    "project_id": "idanbeta",
+    "storage_bucket": "idanbeta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006146655547:android:1897e642afded1f891931e",
+        "android_client_info": {
+          "package_name": "com.example.idanbeta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006146655547-3ev22s949i8ocf9k4nmfvq5jf52shs17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT2HoI-JwxiWXPd6aeTsbo7fIn6bj87Hs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006146655547-3ev22s949i8ocf9k4nmfvq5jf52shs17.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

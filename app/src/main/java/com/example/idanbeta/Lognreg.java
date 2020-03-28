@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,13 +24,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import static com.example.idanbeta.FBref.refAuth;
-import static com.example.idanbeta.FBref.refUser;
+import static com.example.idanbeta.FBref.refClients;
+import static com.example.idanbeta.FBref.refPhyios;
+//import static com.example.idanbeta.FBref.refUser;
 
 public class Lognreg extends AppCompatActivity {
     TextView tVtitle, tVregister, tVnameview;
@@ -38,12 +49,12 @@ public class Lognreg extends AppCompatActivity {
     Button btn;
     CheckBox cb;
     Spinner sp;
-
-    String name, phone, email, password, uid;
+    String str1, str2;
+    String name, phone, email, password, uid, phy = "none";
     User userdb;
-    Boolean stayConnect, registered, firstrun, phy, isPhysio;
+    Boolean stayConnect, registered, firstrun, cbphy, isPhysio, perm;
     public FirebaseAuth mAuth;
-
+    String[] Parray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +72,35 @@ public class Lognreg extends AppCompatActivity {
         tVnameview=(TextView) findViewById(R.id.tVname);
         cb=(CheckBox) findViewById(R.id.cbx);
         sp=(Spinner) findViewById(R.id.spn);
+        //sp.setOnItemSelectedListener(this);
+        //addItemsOnSpinner(); //************
 
         mAuth = FirebaseAuth.getInstance();
-        //להוסיף לתונה והאופציה להעלים ולהציג את הספינר והצקבוקס
 
         stayConnect=false;
         registered=true;
+
+        final List<String> pList = new ArrayList<>();
+
+        //DatabaseReference r = FirebaseDatabase.getInstance().getReference("Game");
+        //r.child("Teams").addListenerForSingleValueEvent(new ValueEventListener()
+        refPhyios.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                pList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    User u = ds.getValue(User.class);
+                    pList.add(u.getName());
+                }
+                ArrayAdapter<String> Adp = new ArrayAdapter<>(Lognreg.this, R.layout.support_simple_spinner_dropdown_item, pList);
+                sp.setAdapter(Adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         firstrun=settings.getBoolean("firstRun",false);
@@ -81,6 +115,9 @@ public class Lognreg extends AppCompatActivity {
         }
         else regoption();
     }
+
+
+
 
     /**
      * On activity start - Checking if user already logged in.
@@ -178,8 +215,7 @@ public class Lognreg extends AppCompatActivity {
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
                                 editor.apply(); //changed from commit
-                                editor.putBoolean("is physio",cb.isChecked());
-                                editor.apply();
+                                isPhysio=settings.getBoolean("is physio",false);
                                 Log.d("MainActivity", "signinUserWithEmail:success");
                                 Toast.makeText(Lognreg.this, "Login Success", Toast.LENGTH_LONG).show();
                                 if (isPhysio ) {
@@ -199,8 +235,14 @@ public class Lognreg extends AppCompatActivity {
         } else {
             name=eTname.getText().toString();
             phone=eTphone.getText().toString();
-            phy=cb.isChecked();
-
+            cbphy=cb.isChecked();
+            //phy=String.valueOf(sp.getSelectedItem());
+            if (cb.isChecked()){
+                phy="none"; perm = true;
+            }
+            else{
+                phy=String.valueOf(sp.getSelectedItem()); perm = false;
+            }
             final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);
             refAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -212,18 +254,22 @@ public class Lognreg extends AppCompatActivity {
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
                                 editor.putBoolean("firstRun",false);
-                                editor.commit();
+                                editor.putBoolean("is physio",cb.isChecked());
+                                editor.apply(); //changed from commit
                                 Log.d("MainActivity", "createUserWithEmail:success");
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
-                                userdb=new User(name,email,phone,uid,phy);
-                                refUser.child(name).setValue(userdb);
+                                userdb=new User(name,email,phone,uid,phy,perm);
+                                //refUser.child(name).setValue(userdb);
                                 Toast.makeText(Lognreg.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                if (phy==true){
-                                Intent si = new Intent(Lognreg.this,Physiolists.class);
-                                startActivity(si);
+                                if (cbphy){
+                                    refPhyios.child(name).setValue(userdb);
+
+                                    Intent si = new Intent(Lognreg.this,Physiolists.class);
+                                    startActivity(si);
                                 }
                                 else {
+                                    refClients.child(name).setValue(userdb);
                                     Intent si = new Intent(Lognreg.this,Patientlists.class);
                                     startActivity(si);
                                 }

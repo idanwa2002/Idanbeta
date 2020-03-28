@@ -1,16 +1,17 @@
 package com.example.idanbeta;
 
 public class User {
-    private String name, email, phone, uid;
-    private Boolean phy;
+    private String name, email, phone, uid, phy;
+    private Boolean permission;
 
-    //public User (){}
-    public User (String name, String email, String phone, String uid, Boolean phy) {
+    public User (){}
+    public User (String name, String email, String phone, String uid, String phy, Boolean permission) {
         this.name=name;
         this.email=email;
         this.phone=phone;
         this.uid=uid;
         this.phy=phy;
+        this.permission=permission;
 
     }
 
@@ -46,11 +47,15 @@ public class User {
         this.uid=uid;
     }
 
-    public Boolean getPhy() {
+    public String getPhy() {
         return phy;
     }
 
-    public void setPhy(Boolean phy) {
+    public void setPhy(String phy) {
         this.phy=phy;
     }
+
+    public Boolean getPermission() {return permission;}
+
+    public void setPermission(Boolean permission) {this.permission=permission;}
 }

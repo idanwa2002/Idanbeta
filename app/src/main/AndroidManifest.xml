@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Patientlists"></activity>
+        <activity android:name=".Profiles"></activity>
+        <activity android:name=".Sheetfeedback" />
+        <activity android:name=".Passing" />
+        <activity android:name=".Addnew" />
+        <activity android:name=".Clientpage" />
+        <activity android:name=".Patientlists" />
         <activity android:name=".Physiolists" />
         <activity android:name=".Lognreg" />
         <activity android:name=".MainActivity">

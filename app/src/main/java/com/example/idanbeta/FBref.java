@@ -14,6 +14,9 @@ public class FBref {
     //public static DatabaseReference refTest=FBDB.getReference("Test");
     public static DatabaseReference refPhyios=FBDB.getReference("Physios");
     public static DatabaseReference refClients=FBDB.getReference("Clients");
+    public static DatabaseReference refTasks=FBDB.getReference("Tasks");
+    public static DatabaseReference refFeedback=FBDB.getReference("Feedback");
+    public static DatabaseReference refExinfo=FBDB.getReference("Exinfo");
 
 
 }

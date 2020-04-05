@@ -1,13 +1,19 @@
 package com.example.idanbeta;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,7 +29,7 @@ import static com.example.idanbeta.FBref.refAuth;
 import static com.example.idanbeta.FBref.refClients;
 import static com.example.idanbeta.FBref.refPhyios;
 
-public class Physiolists extends AppCompatActivity {
+public class Physiolists extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ListView patlv, penlv;
     String phyName;//,uid;
     ArrayList<String> waitList = new ArrayList<>();
@@ -31,12 +37,21 @@ public class Physiolists extends AppCompatActivity {
     ArrayList<User> waitValues = new ArrayList<>();
     FirebaseUser user = refAuth.getCurrentUser();
     String uid = user.getUid();
+    AlertDialog.Builder ad;
+    LinearLayout dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physiolists);
         patlv=(ListView) findViewById(R.id.clientslv);
         penlv=(ListView) findViewById(R.id.pendinglv);
+
+        penlv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        penlv.setOnItemClickListener(this);
+
+        patlv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        patlv.setOnItemClickListener(this);
 
         refPhyios.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -67,7 +82,7 @@ public class Physiolists extends AppCompatActivity {
                     User user = data.getValue(User.class);
                     //waitValues.add(user);
                     if (user.getPermission()&&(phyName.equals(user.getPhy())))
-                        ClientList.add(user.getName());
+                    ClientList.add(user.getName());
                     if (!(user.getPermission())&&(phyName.equals(user.getPhy())))
                         waitList.add(user.getName());
 
@@ -85,9 +100,89 @@ public class Physiolists extends AppCompatActivity {
         });
 
     }
+
+    //@Override
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        switch(parent.getId()){
+            case R.id.clientslv:
+                //String str= waitList.get(position);
+                //Toast.makeText(Physiolists.this, str, Toast.LENGTH_LONG).show();
+                ///Intent i = new Intent(Physiolists.this, Newtask.class);
+                //i.putExtra("key",str);
+                //startActivity(i);
+
+                dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
+                ad = new AlertDialog.Builder(this);
+                ad.setCancelable(false);
+                ad.setTitle("enter client page?");
+                ad.setView(dialog);
+                ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String str= ClientList.get(position);
+                        //Toast.makeText(Physiolists.this, str + phyName, Toast.LENGTH_LONG).show();
+                       Intent di= new Intent(Physiolists.this, Clientpage.class);
+                        //Intent in = new Intent(Physiolists.this, Addnew.class);
+
+                        di.putExtra("name",str);
+                        di.putExtra("pname",phyName);
+                        startActivity(di);
+                        dialogInterface.dismiss();
+                    }
+                });
+                ad.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                AlertDialog adb = ad.create();
+                adb.show();
+
+                break;
+
+            case R.id.pendinglv:
+                dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
+                ad = new AlertDialog.Builder(this);
+                ad.setCancelable(false);
+                ad.setTitle("accept client?");
+                ad.setView(dialog);
+                ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        refClients.child(waitList.get(position)).child("permission").setValue(true);
+                        dialogInterface.dismiss();
+                        recreate();
+                    }
+                });
+                ad.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                ad.setNegativeButton("deny", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String str= waitList.get(position);
+                        refClients.child(str).removeValue();
+                        Toast.makeText(Physiolists.this, "Client denied", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+                        recreate();
+                    }
+                });
+                AlertDialog adb2 = ad.create();
+                adb2.show();
+                break;
+        }
+    }
+
+
     public boolean onCreateOptionsMenu (Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.add(0,0,100,"Disconnect");
+        menu.add(0,0,200,"My Profile");
         return true;
     }
     //SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
@@ -100,8 +195,21 @@ public class Physiolists extends AppCompatActivity {
             SharedPreferences.Editor editor=settings.edit();
             editor.putBoolean("stayConnect",false);
             editor.apply(); //changed from commit
-            finish();
+            //finish();
+
+            Intent in = new Intent(Physiolists.this, MainActivity.class);
+
+            startActivity(in);
         }
+        if (st.equals("My Profile")){
+
+
+            Intent in = new Intent(Physiolists.this, Profiles.class);
+            in.putExtra("name",phyName);
+            startActivity(in);
+        }
+
         return true;
-    }}
+    }
+}
 

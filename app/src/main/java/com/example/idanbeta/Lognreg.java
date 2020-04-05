@@ -131,16 +131,18 @@ public class Lognreg extends AppCompatActivity {
         //Boolean isChecked=false;
         Boolean isChecked=settings.getBoolean("stayConnect",false);
         isPhysio=settings.getBoolean("is physio",false);
-        if (refAuth.getCurrentUser()!=null && isChecked && isPhysio ) {
+        //isChecked = false;
+        isPhysio = false;
+        if (refAuth.getCurrentUser()!=null && isChecked ) {
             stayConnect=true;
-            Intent si = new Intent(Lognreg.this,Physiolists.class);
+            Intent si = new Intent(Lognreg.this,Passing.class);
             startActivity(si);
         }
-        if (refAuth.getCurrentUser()!=null && isChecked && !isPhysio ) {
-            stayConnect=true;
-            Intent si = new Intent(Lognreg.this,Patientlists.class);
-            startActivity(si);
-        }
+        //if (refAuth.getCurrentUser()!=null && isChecked && !isPhysio ) {
+         //   stayConnect=true;
+         //   Intent si = new Intent(Lognreg.this,Passing.class);
+         //   startActivity(si);
+        //}
     }
 
     /**
@@ -216,16 +218,17 @@ public class Lognreg extends AppCompatActivity {
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
                                 editor.apply(); //changed from commit
                                 isPhysio=settings.getBoolean("is physio",false);
+                                isPhysio=false;
                                 Log.d("MainActivity", "signinUserWithEmail:success");
                                 Toast.makeText(Lognreg.this, "Login Success", Toast.LENGTH_LONG).show();
-                                if (isPhysio ) {
-                                    Intent si = new Intent(Lognreg.this,Physiolists.class);
+                                //if (isPhysio ) {
+                                    //Intent si = new Intent(Lognreg.this,Physiolists.class);
+                                    //startActivity(si);
+                                //}
+                                //if (!isPhysio ) {
+                                    Intent si = new Intent(Lognreg.this,Passing.class);
                                     startActivity(si);
-                                }
-                                if (!isPhysio ) {
-                                    Intent si = new Intent(Lognreg.this,Patientlists.class);
-                                    startActivity(si);
-                                }
+                                //}
                             } else {
                                 Log.d("MainActivity", "signinUserWithEmail:fail");
                                 Toast.makeText(Lognreg.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
@@ -265,12 +268,12 @@ public class Lognreg extends AppCompatActivity {
                                 if (cbphy){
                                     refPhyios.child(name).setValue(userdb);
 
-                                    Intent si = new Intent(Lognreg.this,Physiolists.class);
+                                    Intent si = new Intent(Lognreg.this,Passing.class);
                                     startActivity(si);
                                 }
                                 else {
                                     refClients.child(name).setValue(userdb);
-                                    Intent si = new Intent(Lognreg.this,Patientlists.class);
+                                    Intent si = new Intent(Lognreg.this,Passing.class);
                                     startActivity(si);
                                 }
                             } else {

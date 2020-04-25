@@ -70,7 +70,7 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
-        Toast.makeText(Physiolists.this, phyName, Toast.LENGTH_LONG).show();
+        //Toast.makeText(Physiolists.this, phyName, Toast.LENGTH_LONG).show();
 
         refClients.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -113,7 +113,7 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
 
                 dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
                 ad = new AlertDialog.Builder(this);
-                ad.setCancelable(false);
+                ad.setCancelable(true);
                 ad.setTitle("enter client page?");
                 ad.setView(dialog);
                 ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
@@ -145,7 +145,7 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
             case R.id.pendinglv:
                 dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
                 ad = new AlertDialog.Builder(this);
-                ad.setCancelable(false);
+                ad.setCancelable(true);
                 ad.setTitle("accept client?");
                 ad.setView(dialog);
                 ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
@@ -183,6 +183,7 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
         getMenuInflater().inflate(R.menu.main, menu);
         menu.add(0,0,100,"Disconnect");
         menu.add(0,0,200,"My Profile");
+        menu.add(0,0,400,"Add New Exercise");
         return true;
     }
     //SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
@@ -209,7 +210,21 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
             startActivity(in);
         }
 
+        if (st.equals("Add New Exercise")){
+
+
+            Intent in = new Intent(Physiolists.this, NewEx.class);
+            in.putExtra("name",phyName);
+            startActivity(in);
+        }
+
         return true;
+    }
+
+    public void sqr(View view) {
+        Intent in = new Intent(Physiolists.this, ExList.class);
+        in.putExtra("name",phyName);
+        startActivity(in);
     }
 }
 

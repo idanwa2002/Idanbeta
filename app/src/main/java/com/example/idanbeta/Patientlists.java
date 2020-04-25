@@ -80,7 +80,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
         p=pName;
         String bbb=getIntent().getStringExtra("perm");
         if (bbb.equals("yes"))
-            tv.setText("Welcome back " + c + "!, you can see above exercises that your doctor has ordered you to do and information about them including videos, good luck! (please check your doctor's advice before doing an exercise");
+            tv.setText("Welcome back " + c + "!, you can see above exercises that your trainer has ordered you to do and information about them including videos, good luck! (please check your trainer's advice before doing an exercise)");
         if (bbb.equals("no"))
             tv.setText("Waiting for your physio to accept you!");
 
@@ -193,7 +193,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
 
             }
         });*/
-        Toast.makeText(Patientlists.this, c,Toast.LENGTH_LONG).show();
+        //Toast.makeText(Patientlists.this, c,Toast.LENGTH_LONG).show();
         fList.clear();
         //tv.setText( "!");
         //tv.setText(c  + "!!!");
@@ -261,7 +261,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot data : dataSnapshot.getChildren()){
                             n = data.getValue(Information.class);
-                            Toast.makeText(Patientlists.this, exList.get(position), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(Patientlists.this, exList.get(position), Toast.LENGTH_LONG).show();
                             if (exList.get(position).equals(n.gettName())){
                                 TextView tv2=customLayout.findViewById(R.id.tv2);
                                 tv2.setText(n.getInfo());
@@ -335,7 +335,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
 
                 first = str.substring(0,10 );
                 second = str.substring(11);
-                Toast.makeText(Patientlists.this, second +str + first , Toast.LENGTH_LONG).show();
+                //Toast.makeText(Patientlists.this, second +str + first , Toast.LENGTH_LONG).show();
 
                 refTasks.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -442,6 +442,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
         menu.add(0,0,100,"Disconnect");
         menu.add(0,0,200,"My Profile");
         menu.add(0,0,300,"Doctor's Profile");
+        menu.add(0,0,300,"Exercise List");
         return true;
     }
     //SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
@@ -472,6 +473,13 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
 
             Intent in = new Intent(Patientlists.this, Profiles.class);
             in.putExtra("name",p);
+            startActivity(in);
+        }
+        if (st.equals("Exercise List")){
+
+
+            Intent in = new Intent(Patientlists.this, ExList.class);
+            //in.putExtra("name",phyName);
             startActivity(in);
         }
         return true;

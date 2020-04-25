@@ -80,7 +80,7 @@ public class Profiles extends AppCompatActivity {
                         tVemailview.setText(u.getEmail());
                         tVnameview.setText(u.getName());
                         tVuidview.setText(u.getPhone());
-                        tv.setText("Doctor's profile");
+                        tv.setText("Trainer's profile");
 
                     }
                 }

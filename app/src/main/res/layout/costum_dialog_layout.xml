@@ -8,14 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
         ></TextView>
     <TextView
         android:id="@+id/tv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="15dp"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
         ></TextView>
     <Space
         android:layout_width="match_parent"
@@ -25,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="10dp"
+        android:textSize="15dp"
+        android:textColor="@android:color/black"
         android:text="Have you done the exercise?"></TextView>
 
     <CheckBox
@@ -50,7 +53,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="10dp"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
         android:text="How would you rate your performence?"></TextView>
     <Space
         android:layout_width="match_parent"

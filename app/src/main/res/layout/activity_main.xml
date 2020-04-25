@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
+    <ImageView
         android:id="@+id/but"
-        android:onClick="n"
+        android:layout_width="412dp"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start application"
+        android:layout_height="336dp"
+        android:src="@drawable/logo2"
+
+        android:onClick="n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

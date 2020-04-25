@@ -12,9 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="                       Task information:"
+        android:gravity="center"
+        android:text="Exercise information:"
 
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
 
     <ListView
         android:id="@+id/taskslv"
@@ -23,13 +28,23 @@
         android:layout_weight="3">
 
     </ListView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="                       Tasks to complete:"
+        android:gravity="center"
+        android:text="Exercises to complete:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
+
 
     <ListView
         android:id="@+id/finishedlv"
@@ -38,6 +53,10 @@
         android:layout_weight="10">
 
     </ListView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/tvtv"

@@ -29,6 +29,7 @@
             android:gravity="center"
             android:id="@+id/title"
             android:textSize="30sp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textStyle="bold" />
 
         <Space
@@ -40,13 +41,23 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="name" />
+            android:gravity="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="20dp"
+            android:text="Name:" />
 
         <TextView
             android:id="@+id/tVnameview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:gravity="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="20dp"
             android:layout_weight="1" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black"/>
 
         <Space
             android:layout_width="match_parent"
@@ -57,13 +68,23 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="e-mail" />
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:text="E-mail:" />
 
         <TextView
             android:id="@+id/tVemailview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="20dp"
+            android:gravity="center"
             android:layout_weight="1" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black"/>
 
         <Space
             android:layout_width="match_parent"
@@ -73,14 +94,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:gravity="center"
             android:layout_weight="1"
-            android:text="Phone" />
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="20dp"
+            android:text="Phone:" />
+
 
         <TextView
             android:id="@+id/tVuidview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:gravity="center"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="20dp"
             android:layout_weight="1" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black"/>
 
         <Space
             android:layout_width="match_parent"
@@ -109,7 +141,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:onClick="update"
-                android:text="Go back" />
+                android:text="Go back"
+                android:textStyle="bold"
+                android:background="@mipmap/square"/>
 
             <Space
                 android:layout_width="0dp"

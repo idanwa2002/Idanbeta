@@ -4,12 +4,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher_foreground"
+        android:label="MyTrainer"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Profiles"></activity>
+        <activity android:name=".ExList"></activity>
+        <activity android:name=".NewEx" />
+        <activity android:name=".Profiles" />
         <activity android:name=".Sheetfeedback" />
         <activity android:name=".Passing" />
         <activity android:name=".Addnew" />

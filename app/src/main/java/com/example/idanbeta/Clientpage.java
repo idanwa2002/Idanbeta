@@ -135,7 +135,7 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         TextView tv=customLayout.findViewById(R.id.tv);
         TextView tv2=customLayout.findViewById(R.id.tv2);
         builder.setTitle(c);
-        builder.setMessage(second +third + first);
+        //builder.setMessage(second +third + first);
         refClients.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -223,8 +223,8 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         first = str.substring(0,10 );
         second = str.substring(11,str.length() - 6);
         third = str.substring(str.length() - 5);
-        Toast.makeText(Clientpage.this, second +third + first , Toast.LENGTH_LONG).show();
-        builder.setMessage(second +third + first);
+        //Toast.makeText(Clientpage.this, second +third + first , Toast.LENGTH_LONG).show();
+        //builder.setMessage(second +third + first);
         refFeedback.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

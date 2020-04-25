@@ -12,9 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="
-                      Pending clients:"
+        android:text="Pending clients:"
+        android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
 
     <ListView
         android:id="@+id/pendinglv"
@@ -23,13 +27,22 @@
         android:layout_weight="3">
 
     </ListView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="                       Current clients:"
+        android:gravity="center"
+        android:text="Current clients:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
 
     <ListView
         android:id="@+id/clientslv"
@@ -38,9 +51,17 @@
         android:layout_weight="10">
 
     </ListView>
-
-    <Space
+    <View
         android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:onClick="sqr"
         android:layout_height="0dp"
-        android:layout_weight="2.5" />
+        android:textSize="19dp"
+        android:layout_weight="2.5"
+        android:background="@mipmap/square"
+        android:text="Go To exercise list"/>
 </LinearLayout>

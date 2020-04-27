@@ -1,5 +1,6 @@
 package com.example.idanbeta;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -18,6 +19,9 @@ import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -28,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.example.idanbeta.FBref.refExinfo;
 import static com.example.idanbeta.FBref.refPhyios;
 import static com.example.idanbeta.FBref.refTasks;
 
@@ -37,9 +42,10 @@ public class Addnew extends AppCompatActivity {
     EditText et,et2;
     Spinner sp,sp2;
     String advice, tName,url="tbd",c,p;
-    String time;
+    String time,days;
     //private Date date;
-    int days;
+    int num;
+
     Date date = Calendar.getInstance().getTime();
     String thisdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -49,7 +55,7 @@ public class Addnew extends AppCompatActivity {
     }
 
     ArrayList<String> tList = new ArrayList<>(), mList = new ArrayList<>(), hList = new ArrayList<>();
-    ArrayList<Integer> dList = new ArrayList<>();
+    ArrayList<String> dList = new ArrayList<>();
 
 
     @RequiresApi(api = Build.VERSION_CODES.O) ///////////////
@@ -81,22 +87,38 @@ public class Addnew extends AppCompatActivity {
         });*/
 
         dList.clear();
-        int j = 14;
+        int j = 9;
         while (j>0){
             //String s = String.valueOf(j);
-            dList.add(j);
+            dList.add(j + " days");
             j--;
         }
 
-        ArrayAdapter aa = new ArrayAdapter<Integer>(Addnew.this,R.layout.support_simple_spinner_dropdown_item, dList);
+        ArrayAdapter aa = new ArrayAdapter<String>(Addnew.this,R.layout.support_simple_spinner_dropdown_item, dList);
         sp2.setAdapter(aa);
 
-        tList.clear();
-        tList.add("Task 1");
-        tList.add("Task 2");
-        tList.add("Task 3");
-        ArrayAdapter a = new ArrayAdapter<String>(Addnew.this,R.layout.support_simple_spinner_dropdown_item, tList);
-        sp.setAdapter(a);
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    tList.add(information.gettName());
+
+                }
+                ArrayAdapter a = new ArrayAdapter<String>(Addnew.this,R.layout.support_simple_spinner_dropdown_item, tList);
+                sp.setAdapter(a);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
         tv.setText("Set a new task for " + cName);
         //tv.setText(thisdate+"        " + addOneDay(thisdate) + "   " +date );
@@ -119,7 +141,8 @@ public class Addnew extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void enter(View view) throws ParseException {
-        days=Integer.valueOf((Integer) sp2.getSelectedItem());
+        days=String.valueOf((String) sp2.getSelectedItem());
+        num =  Character.getNumericValue(days.charAt(0));
         //SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         //String formattedDate = sdf.format(date);
         //String dt = "2008-01-01";  // Start date
@@ -131,7 +154,7 @@ public class Addnew extends AppCompatActivity {
         tName=String.valueOf(sp.getSelectedItem());
         advice=et2.getText().toString();
         Exercises ex;// = new Exercises(p,c,time,advice,tName,thisdate,true);
-        int j=0,ddd=days;
+        int j=0,ddd=num;
         while (j<(ddd)){
             thisdate=addOneDay(thisdate);
             ex = new Exercises(p,c,time,advice,tName,thisdate,true);

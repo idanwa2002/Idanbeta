@@ -1,14 +1,14 @@
 package com.example.idanbeta;
 
 class Information {
-    private String info, tName,url;
+    private String info, tName,url,type;
 
     public Information (){}
-    public Information(String tName, String url, String info) {
+    public Information(String tName, String url, String info,String type) {
         this.tName=tName;
         this.url=url;
         this.info=info;
-        //this.fb=fb;
+        this.type=type;
 
     }
 
@@ -31,5 +31,9 @@ class Information {
     public String gettName() {return tName;}
 
     public void settName(String tName) {this.tName=tName;}
+
+    public String getType() {return type;}
+
+    public void setType(String type) {this.type=type;}
 
 }

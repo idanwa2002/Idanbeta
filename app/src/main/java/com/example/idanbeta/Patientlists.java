@@ -82,7 +82,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
         if (bbb.equals("yes"))
             tv.setText("Welcome back " + c + "!, you can see above exercises that your trainer has ordered you to do and information about them including videos, good luck! (please check your trainer's advice before doing an exercise)");
         if (bbb.equals("no"))
-            tv.setText("Waiting for your physio to accept you!");
+            tv.setText("Waiting for your trainer to accept you!");
 
         finlv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         finlv.setOnItemClickListener(this);
@@ -282,7 +282,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
                                     if (str.equals(n.gettName())){
                                         //ad.setMessage(n.getInfo()); // לשנות לקריאה רציפה*********
                                         //Toast.makeText(Patientlists.this, n.getUrl(), Toast.LENGTH_LONG).show();
-                                        Uri uri = Uri.parse("http://www." + n.getUrl()); // missing 'http://' will cause crashed
+                                        Uri uri = Uri.parse( n.getUrl()); // missing 'http://' will cause crashed
                                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                         startActivity(intent);
                                         dialogInterface.dismiss();

@@ -28,12 +28,14 @@ ListView exl;
 String str;
     ArrayList<String> xList = new ArrayList<>();
     Information n;
+    TextView tvex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ex_list);
         exl = (ListView) findViewById(R.id.exll);
+        tvex = findViewById(R.id.textView4);
 
         exl.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         exl.setOnItemClickListener(this);
@@ -136,5 +138,172 @@ String str;
     }
 
 
+    public void cardio(View view) {
+        tvex.setText("Cardio Exercises:");
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                xList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    if (information.getType().equals("Cardio"))
+                    xList.add(information.gettName());
+
+                }
+                ArrayAdapter adp = new ArrayAdapter<String>(ExList.this,R.layout.support_simple_spinner_dropdown_item, xList);
+                exl.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void legs(View view) {
+        tvex.setText("Legs Exercises:");
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                xList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    if (information.getType().equals("Legs"))
+                        xList.add(information.gettName());
+
+                }
+                ArrayAdapter adp = new ArrayAdapter<String>(ExList.this,R.layout.support_simple_spinner_dropdown_item, xList);
+                exl.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void arms(View view) {
+        tvex.setText("Arms Exercises:");
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                xList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    if (information.getType().equals("Arms"))
+                        xList.add(information.gettName());
+
+                }
+                ArrayAdapter adp = new ArrayAdapter<String>(ExList.this,R.layout.support_simple_spinner_dropdown_item, xList);
+                exl.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void abs(View view) {
+        tvex.setText("Abs Exercises:");
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                xList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    if (information.getType().equals("Abs"))
+                        xList.add(information.gettName());
+
+                }
+                ArrayAdapter adp = new ArrayAdapter<String>(ExList.this,R.layout.support_simple_spinner_dropdown_item, xList);
+                exl.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void chest(View view) {
+        tvex.setText("Cardio Exercises:");
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                xList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    if (information.getType().equals("Chest"))
+                        xList.add(information.gettName());
+
+                }
+                ArrayAdapter adp = new ArrayAdapter<String>(ExList.this,R.layout.support_simple_spinner_dropdown_item, xList);
+                exl.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void back(View view) {
+        tvex.setText("Back Exercises:");
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                xList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    if (information.getType().equals("Back"))
+                        xList.add(information.gettName());
+
+                }
+                ArrayAdapter adp = new ArrayAdapter<String>(ExList.this,R.layout.support_simple_spinner_dropdown_item, xList);
+                exl.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void shoulders(View view) {
+        tvex.setText("Shoulders Exercises:");
+        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                xList.clear();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Information information = data.getValue(Information.class);
+                    //waitValues.add(user);
+                    if (information.getType().equals("Shoulders"))
+                        xList.add(information.gettName());
+
+                }
+                ArrayAdapter adp = new ArrayAdapter<String>(ExList.this,R.layout.support_simple_spinner_dropdown_item, xList);
+                exl.setAdapter(adp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

@@ -15,7 +15,10 @@
         android:layout_weight="1"
         android:textColor="@android:color/background_dark"
         android:textSize="40dp" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
@@ -24,20 +27,32 @@
         android:textSize="25dp"
 
         android:text="choose exercise, duration and time:" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
-
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
     <Spinner
         android:id="@+id/spinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
     <EditText
         android:id="@+id/et2"
         android:layout_width="match_parent"
@@ -45,7 +60,10 @@
         android:layout_weight="1"
         android:textSize="25dp"
         android:hint="any advice for the client?"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,21 +76,26 @@
             android:layout_height="match_parent"
             android:onClick="chooseTime"
             android:background="@mipmap/clock"
-            android:textColor="@android:color/darker_gray"
-            android:text="Click to pick time">
+            android:textColor="@android:color/darker_gray">
 
         </Button>
-
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" />
+            android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" />
 
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
     <Button
         android:id="@+id/button4"
         android:layout_width="match_parent"
@@ -83,5 +106,8 @@
         android:textSize="20dp"
         android:background="@android:color/holo_red_dark"
         android:text="Submit" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
 </LinearLayout>

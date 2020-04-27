@@ -24,9 +24,9 @@ ImageButton but;
 String url,tName,info;
     //private FirebaseAuth mAuth;
     Timer timer;
-Information information = new Information("Task 1","youtube.com","this is a good exercise to strenghten the legs");
-    Information information1 = new Information("Task 2","google.com","this is a good exercise to improve speech and tongue movement");
-    Information information2 = new Information("Task 3","facebook.com","this is an exercise that helps recover from a knee injury");
+//Information information = new Information("Task 1","youtube.com","this is a good exercise to strenghten the legs");
+  //  Information information1 = new Information("Task 2","google.com","this is a good exercise to improve speech and tongue movement");
+    //Information information2 = new Information("Task 3","facebook.com","this is an exercise that helps recover from a knee injury");
     String thisdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     @Override
     protected void onCreate(Bundle savedInstanceState) {

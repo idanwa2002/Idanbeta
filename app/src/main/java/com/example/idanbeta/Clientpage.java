@@ -272,4 +272,6 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    public void ex1(View view) { finish(); }
 }

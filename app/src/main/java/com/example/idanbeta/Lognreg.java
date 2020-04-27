@@ -43,7 +43,7 @@ import static com.example.idanbeta.FBref.refPhyios;
 //import static com.example.idanbeta.FBref.refUser;
 
 public class Lognreg extends AppCompatActivity {
-    TextView tVtitle, tVregister, tVnameview;
+    TextView tVtitle, tVregister, tVnameview,inv;
     EditText eTname, eTphone, eTemail, eTpass;
     CheckBox cBstayconnect;
     Button btn;
@@ -70,6 +70,7 @@ public class Lognreg extends AppCompatActivity {
         tVregister=(TextView) findViewById(R.id.tVregister);
         btn=(Button)findViewById(R.id.btn);
         tVnameview=(TextView) findViewById(R.id.tVname);
+        inv=(TextView) findViewById(R.id.inv);
         cb=(CheckBox) findViewById(R.id.cbx);
         sp=(Spinner) findViewById(R.id.spn);
         //sp.setOnItemSelectedListener(this);
@@ -104,11 +105,12 @@ public class Lognreg extends AppCompatActivity {
 
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         firstrun=settings.getBoolean("firstRun",false);
-        Toast.makeText(this, ""+firstrun, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, ""+firstrun, Toast.LENGTH_SHORT).show();
         if (firstrun) {
             tVtitle.setText("Register");
             eTname.setVisibility(View.VISIBLE);
             eTphone.setVisibility(View.VISIBLE);
+            inv.setVisibility(View.VISIBLE);
             btn.setText("Register");
             registered=false;
             logoption();
@@ -165,6 +167,7 @@ public class Lognreg extends AppCompatActivity {
                 eTphone.setVisibility(View.VISIBLE);
                 sp.setVisibility(View.VISIBLE);
                 cb.setVisibility(View.VISIBLE);
+                inv.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
                 logoption();
@@ -203,6 +206,10 @@ public class Lognreg extends AppCompatActivity {
      * <p>
      */
     public void logorreg(View view) {
+        if ((eTemail.getText().toString()==null)||(eTpass.getText().toString()==null)||(eTname.getText().toString()==null)||(eTphone.getText().toString()==null)) {
+            Toast.makeText(Lognreg.this, "You need to fill everything to continue!", Toast.LENGTH_LONG).show();
+        }
+        else {
         email=eTemail.getText().toString();
         password=eTpass.getText().toString();
         if (registered) {
@@ -287,5 +294,5 @@ public class Lognreg extends AppCompatActivity {
                         }
                     });
         }
-    }
+    }}
 }

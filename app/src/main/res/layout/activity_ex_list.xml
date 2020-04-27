@@ -16,7 +16,7 @@
         android:textColor="@android:color/background_dark"
         android:textSize="40dp"
         android:layout_weight="1"
-        android:text="Exercise List:" />
+        android:text="Full Exercise List:" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -26,7 +26,100 @@
         android:layout_width="match_parent"
         android:id="@+id/exll"
         android:layout_weight="18"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </ListView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bb1"
+            android:layout_width="9mm"
+            android:layout_height="9mm"
+            android:layout_weight="1"
+            android:onClick="cardio"
+            android:background="@drawable/cardio" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+
+        <Button
+            android:id="@+id/bb2"
+            android:layout_width="9mm"
+            android:layout_height="9mm"
+            android:layout_weight="1"
+            android:onClick="legs"
+            android:background="@drawable/legs" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+        <Button
+            android:id="@+id/bb3"
+            android:layout_width="9mm"
+            android:layout_height="9mm"
+            android:layout_weight="1"
+            android:onClick="arms"
+            android:background="@drawable/arms" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+        <Button
+            android:id="@+id/bb4"
+            android:layout_width="9mm"
+            android:layout_height="9mm"
+            android:layout_weight="1"
+            android:onClick="abs"
+            android:background="@drawable/abs" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+        <Button
+            android:id="@+id/bb5"
+            android:layout_width="9mm"
+            android:layout_height="9mm"
+            android:layout_weight="1"
+            android:onClick="chest"
+            android:background="@drawable/chest" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+        <Button
+            android:id="@+id/bb6"
+            android:layout_width="9mm"
+            android:layout_height="9mm"
+            android:layout_weight="1"
+            android:onClick="back"
+            android:background="@drawable/back" />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+        <Button
+            android:id="@+id/bb7"
+            android:layout_width="9mm"
+            android:layout_height="9mm"
+            android:layout_weight="1"
+            android:onClick="shoulders"
+            android:background="@drawable/shoulders" />
+
+
+
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -39,6 +132,7 @@
         android:onClick="ex"
         android:background="@android:color/background_light"
         android:src="@mipmap/arrow"></ImageButton>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

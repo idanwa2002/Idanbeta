@@ -13,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 
 import static com.example.idanbeta.FBref.refAuth;
 import static com.example.idanbeta.FBref.refClients;
+import static com.example.idanbeta.FBref.refMsg;
 import static com.example.idanbeta.FBref.refPhyios;
 
 public class Physiolists extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -222,9 +225,62 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public void sqr(View view) {
-        Intent in = new Intent(Physiolists.this, ExList.class);
-        in.putExtra("name",phyName);
-        startActivity(in);
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+
+
+        final View customLayout = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        builder.setView(customLayout);
+        TextView tv=customLayout.findViewById(R.id.tv);
+        TextView tv2=customLayout.findViewById(R.id.tv2);
+        EditText edmsg = customLayout.findViewById(R.id.edmsg);
+        tv.setVisibility(View.INVISIBLE);
+        tv2.setVisibility(View.INVISIBLE);
+        edmsg.setVisibility(View.VISIBLE);
+
+        //dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
+        //ad = new AlertDialog.Builder(this);
+        //.setCancelable(false);
+        //ad.setView(dialog);
+        //final String
+        builder.setTitle("New Message To All");
+
+                /**/
+        builder.setPositiveButton("Send Message", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialogInterface, int i) {
+                final EditText edmsg2 = customLayout.findViewById(R.id.edmsg);
+                final String msg = edmsg2.getText().toString();
+
+                refClients.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+                        User us = data.getValue(User.class);
+
+                        //Toast.makeText(Patientlists.this, exList.get(position), Toast.LENGTH_LONG).show();
+                        if ((phyName.equals(us.getPhy())&&(us.getPermission()))){
+                            Messages m = new Messages(phyName,us.getName(),msg);
+                            refMsg.child(us.getName()+" "+msg).setValue(m);
+                        }}
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+                Toast.makeText(Physiolists.this, "Message Sent!" , Toast.LENGTH_LONG).show();
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterfac, int i) {
+                dialogInterfac.cancel();
+            }
+        });
+
+        android.app.AlertDialog adb = builder.create();
+        adb.show();
     }
 }
 

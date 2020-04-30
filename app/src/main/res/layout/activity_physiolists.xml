@@ -60,8 +60,8 @@
         android:layout_width="match_parent"
         android:onClick="sqr"
         android:layout_height="0dp"
-        android:textSize="19dp"
+        android:textSize="15dp"
         android:layout_weight="2.5"
         android:background="@mipmap/square"
-        android:text="Go To exercise list"/>
+        android:text="Write a new message to all"/>
 </LinearLayout>

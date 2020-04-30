@@ -188,6 +188,7 @@ public class Lognreg extends AppCompatActivity {
                 eTphone.setVisibility(View.INVISIBLE);
                 sp.setVisibility(View.INVISIBLE);
                 cb.setVisibility(View.INVISIBLE);
+                inv.setVisibility(View.INVISIBLE);
                 btn.setText("Login");
                 registered=true;
                 regoption();
@@ -206,7 +207,7 @@ public class Lognreg extends AppCompatActivity {
      * <p>
      */
     public void logorreg(View view) {
-        if ((eTemail.getText().toString()==null)||(eTpass.getText().toString()==null)||(eTname.getText().toString()==null)||(eTphone.getText().toString()==null)) {
+        if ((eTemail.getText().toString().equals(""))||(eTpass.getText().toString().equals(""))) {
             Toast.makeText(Lognreg.this, "You need to fill everything to continue!", Toast.LENGTH_LONG).show();
         }
         else {
@@ -243,6 +244,10 @@ public class Lognreg extends AppCompatActivity {
                         }
                     });
         } else {
+            if ((eTemail.getText().toString().equals(""))||(eTpass.getText().toString().equals(""))||(eTname.getText().toString().equals(""))||(eTphone.getText().toString().equals(""))) {
+                Toast.makeText(Lognreg.this, "You need to fill everything to continue!", Toast.LENGTH_LONG).show();
+            }
+            else{
             name=eTname.getText().toString();
             phone=eTphone.getText().toString();
             cbphy=cb.isChecked();
@@ -293,6 +298,6 @@ public class Lognreg extends AppCompatActivity {
                             }
                         }
                     });
-        }
+        }}
     }}
 }

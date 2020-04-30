@@ -43,6 +43,7 @@ import static com.example.idanbeta.FBref.refAuth;
 import static com.example.idanbeta.FBref.refClients;
 import static com.example.idanbeta.FBref.refExinfo;
 import static com.example.idanbeta.FBref.refFeedback;
+import static com.example.idanbeta.FBref.refMsg;
 import static com.example.idanbeta.FBref.refPhyios;
 import static com.example.idanbeta.FBref.refTasks;
 
@@ -64,6 +65,7 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
     CheckBox cbab;
     SeekBar sbad;
     Information n; String str;
+    Messages messages;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,14 +89,15 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
         finlv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         finlv.setOnItemClickListener(this);
 
-        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+        refMsg.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 exList.clear();
                 for(DataSnapshot data : dataSnapshot.getChildren()){
-                    Information information = data.getValue(Information.class);
+                    Messages m = data.getValue(Messages.class);
                     //waitValues.add(user);
-                    exList.add(information.gettName());
+                    if (m.getClient().equals(c))
+                    exList.add(m.getMsg());
 
                 }
                 ArrayAdapter adp = new ArrayAdapter<String>(Patientlists.this,R.layout.support_simple_spinner_dropdown_item, exList);
@@ -254,15 +257,16 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
                 //ad.setView(dialog);
                 //final String
                 str= exList.get(position);
+                builder.setTitle("Message from your trainer");
+                builder.setMessage(str);
 
-                builder.setTitle(str);
-                refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                /*refMsg.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot data : dataSnapshot.getChildren()){
-                            n = data.getValue(Information.class);
+                            messages = data.getValue(Messages.class);
                             //Toast.makeText(Patientlists.this, exList.get(position), Toast.LENGTH_LONG).show();
-                            if (exList.get(position).equals(n.gettName())){
+                            if (exList.get(position).equals(messages.getMsg())){
                                 TextView tv2=customLayout.findViewById(R.id.tv2);
                                 tv2.setText(n.getInfo());
                             }}
@@ -270,31 +274,13 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
-                });
-                builder.setPositiveButton("go to video", new DialogInterface.OnClickListener() {
+                });*/
+                builder.setPositiveButton("Delete Message", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, int i) {
-                        refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for(DataSnapshot data : dataSnapshot.getChildren()){
-                                    n = data.getValue(Information.class);
-                                    if (str.equals(n.gettName())){
-                                        //ad.setMessage(n.getInfo()); // לשנות לקריאה רציפה*********
-                                        //Toast.makeText(Patientlists.this, n.getUrl(), Toast.LENGTH_LONG).show();
-                                        Uri uri = Uri.parse( n.getUrl()); // missing 'http://' will cause crashed
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                        startActivity(intent);
-                                        dialogInterface.dismiss();
-                                    }}
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        refMsg.child(c + " " + str).removeValue();
+                        recreate();
+                        dialogInterface.cancel();
                     }
                 });
 
@@ -391,7 +377,10 @@ public class Patientlists extends AppCompatActivity implements MyDialog.MyDialog
                         Date time1=cal.getTime();
                         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
                         String time=dateFormat.format(time1);
-                        Fback fback=new Fback(c,etad.getText().toString(),time,date,cbab.isChecked(),sbad.getProgress(),second);
+                        String feedb = etad.getText().toString();
+                        if (feedb.equals(""))
+                            feedb = "No feedback returned";
+                        Fback fback=new Fback(c,feedb,time,date,cbab.isChecked(),sbad.getProgress(),second);
                         //Fback fback1=new Fback(etad.getText().toString(),)
 
                         refFeedback.child(date + " " + second).setValue(fback);

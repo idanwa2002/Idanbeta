@@ -1,5 +1,9 @@
 package com.example.idanbeta;
-
+/**
+ * @author		Idan Wasserblat <uxrcky@gmail.com>
+ * @version	1.6
+ * class exercises that saves info about exercises for the users using pname, cname, time, date, advice, tname, active
+ */
 class Messages {
     private String trainer,client,msg;
 

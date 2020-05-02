@@ -1,4 +1,9 @@
 package com.example.idanbeta;
+/**
+ * @author		Idan Wasserblat <uxrcky@gmail.com>
+ * @version	1.6
+ * class users that saves values of app users using name,email,phone,uid,phy and permission
+ */
 
 public class User {
     private String name, email, phone, uid, phy;

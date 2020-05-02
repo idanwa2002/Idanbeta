@@ -3,7 +3,11 @@ package com.example.idanbeta;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
+/**
+ * @author		Idan Wasserblat <uxrcky@gmail.com>
+ * @version	1.6
+ * class exercises that saves info about exercises for the users using pname, cname, time, date, advice, tname, active
+ */
 public class Exercises {
     private String pName, cName, advice, tName;//,url;
     private String time;

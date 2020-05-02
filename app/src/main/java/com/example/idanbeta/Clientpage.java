@@ -8,6 +8,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,20 +21,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.example.idanbeta.FBref.refAuth;
 import static com.example.idanbeta.FBref.refClients;
 import static com.example.idanbeta.FBref.refFeedback;
+import static com.example.idanbeta.FBref.refImages;
 import static com.example.idanbeta.FBref.refMsg;
 import static com.example.idanbeta.FBref.refTasks;
 
@@ -43,7 +54,12 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
     ArrayList<String> tList = new ArrayList<>();
     ArrayList<String> fbList = new ArrayList<>();
     ArrayAdapter aa;
-
+    ImageView iv;
+    /**
+     * on activity create - fills both lists, one with tasks not finished and one with feedback
+     * <p>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +141,11 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
 
     }
 
-
+    /**
+     * on left button clicked - opens dialog with user info
+     * <p>
+     *
+     */
 
     public void b(View view){
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -135,7 +155,25 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         builder.setView(customLayout);
         TextView tv=customLayout.findViewById(R.id.tv);
         TextView tv2=customLayout.findViewById(R.id.tv2);
+        iv=customLayout.findViewById(R.id.iV);
         builder.setTitle(c);
+        refImages.child(c+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                try {
+                    download();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(Clientpage.this, "Feel free to show off your progress for your trainer" , Toast.LENGTH_LONG).show();
+
+            }
+        });
+
         //builder.setMessage(second +third + first);
         refClients.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -181,35 +219,24 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+    /**
+     * on right button cliched - goes to addnew activty
+     * <p>
+     *
+     */
 
     public void bb(View view){
         Intent in = new Intent(Clientpage.this, Addnew.class);
         in.putExtra("name",c);
         in.putExtra("pname",p);
         startActivity(in);
+        recreate();
     }
-
-    public boolean onCreateOptionsMenu (Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        menu.add(0,0,100,"Disconnect");
-        return true;
-    }
-    //SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-    //Boolean isChecked=settings.getBoolean("stayConnect",false);
-    public boolean onOptionsItemSelected (MenuItem item) {
-        String st=item.getTitle().toString();
-        if (st.equals("Disconnect")){
-            refAuth.signOut();
-            SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-            SharedPreferences.Editor editor=settings.edit();
-            editor.putBoolean("stayConnect",false);
-            editor.apply(); //changed from commit
-            finish();
-        }
-        return true;
-    }
-
+    /**
+     * on second list view clicked - open alert dialog with feedback details
+     * <p>
+     *
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -274,8 +301,18 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         dialog.show();
     }
 
-    public void ex1(View view) { finish(); }
+    /**
+     * on bottom button clicked - finishes activity
+     * <p>
+     *
+     */
 
+    public void ex1(View view) { finish(); }
+    /**
+     * on middle button clicked - opens dialog for new message
+     * <p>
+     *
+     */
     public void bbb(View view) {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         final View customLayout = getLayoutInflater().inflate(R.layout.dialog_layout, null);
@@ -287,11 +324,6 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         tv2.setVisibility(View.INVISIBLE);
         edmsg.setVisibility(View.VISIBLE);
 
-        //dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
-        //ad = new AlertDialog.Builder(this);
-        //.setCancelable(false);
-        //ad.setView(dialog);
-        //final String
         builder.setTitle("New Message To " + c);
 
         /**/
@@ -317,5 +349,33 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
 
         android.app.AlertDialog adb = builder.create();
         adb.show();
+    }
+    /**
+     * puts client picture on image view from firebase
+     * <p>
+     *
+     */
+    public void download() throws IOException {
+
+
+        StorageReference refImg = refImages.child(c + ".jpg");
+
+        final File localFile = File.createTempFile(c,"jpg");
+        refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                //pd.dismiss();
+                Toast.makeText(Clientpage.this, "Image download success", Toast.LENGTH_LONG).show();
+                String filePath = localFile.getPath();
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                iv.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                //pd.dismiss();
+                Toast.makeText(Clientpage.this, "Image download failed", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

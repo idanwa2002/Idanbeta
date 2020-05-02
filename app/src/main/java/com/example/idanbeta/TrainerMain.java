@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,16 +31,21 @@ import static com.example.idanbeta.FBref.refClients;
 import static com.example.idanbeta.FBref.refMsg;
 import static com.example.idanbeta.FBref.refPhyios;
 
-public class Physiolists extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class TrainerMain extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ListView patlv, penlv;
-    String phyName;//,uid;
+    String phyName;
     ArrayList<String> waitList = new ArrayList<>();
     ArrayList<String> ClientList = new ArrayList<>();
-    ArrayList<User> waitValues = new ArrayList<>();
     FirebaseUser user = refAuth.getCurrentUser();
     String uid = user.getUid();
     AlertDialog.Builder ad;
     LinearLayout dialog;
+
+    /**
+     * On activity create - connect entities to xml and fills up both lists from firebase
+     * <p>
+     *
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +77,6 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
-        //Toast.makeText(Physiolists.this, phyName, Toast.LENGTH_LONG).show();
 
         refClients.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -83,16 +86,15 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
                 ClientList.clear();
                 for(DataSnapshot data : dataSnapshot.getChildren()){
                     User user = data.getValue(User.class);
-                    //waitValues.add(user);
                     if (user.getPermission()&&(phyName.equals(user.getPhy())))
                     ClientList.add(user.getName());
                     if (!(user.getPermission())&&(phyName.equals(user.getPhy())))
                         waitList.add(user.getName());
 
                 }
-                ArrayAdapter adp = new ArrayAdapter<String>(Physiolists.this,R.layout.support_simple_spinner_dropdown_item, waitList);
+                ArrayAdapter adp = new ArrayAdapter<String>(TrainerMain.this,R.layout.support_simple_spinner_dropdown_item, waitList);
                 penlv.setAdapter(adp);
-                ArrayAdapter a = new ArrayAdapter<String>(Physiolists.this,R.layout.support_simple_spinner_dropdown_item, ClientList);
+                ArrayAdapter a = new ArrayAdapter<String>(TrainerMain.this,R.layout.support_simple_spinner_dropdown_item, ClientList);
                 patlv.setAdapter(a);
             }
 
@@ -103,6 +105,12 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
         });
 
     }
+
+    /**
+     * On click on either list - 1: shows client that arent accepted. 2:shows clients that are accepted
+     * <p>
+     *
+     */
 
     //@Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -124,7 +132,7 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String str= ClientList.get(position);
                         //Toast.makeText(Physiolists.this, str + phyName, Toast.LENGTH_LONG).show();
-                       Intent di= new Intent(Physiolists.this, Clientpage.class);
+                       Intent di= new Intent(TrainerMain.this, Clientpage.class);
                         //Intent in = new Intent(Physiolists.this, Addnew.class);
 
                         di.putExtra("name",str);
@@ -170,7 +178,7 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String str= waitList.get(position);
                         refClients.child(str).removeValue();
-                        Toast.makeText(Physiolists.this, "Client denied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TrainerMain.this, "Client denied", Toast.LENGTH_SHORT).show();
                         dialogInterface.dismiss();
                         recreate();
                     }
@@ -181,16 +189,27 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+    /**
+     * creates options menu
+     * <p>
+     *
+     */
+
 
     public boolean onCreateOptionsMenu (Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.add(0,0,100,"Disconnect");
         menu.add(0,0,200,"My Profile");
+        menu.add(0,0,300,"Exercise List");
         menu.add(0,0,400,"Add New Exercise");
+        menu.add(0,0,500,"Credits");
         return true;
     }
-    //SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-    //Boolean isChecked=settings.getBoolean("stayConnect",false);
+    /**
+     *on click on options menu - transfers to your selected activity
+     * <p>
+     *
+     */
     public boolean onOptionsItemSelected (MenuItem item) {
         String st=item.getTitle().toString();
         if (st.equals("Disconnect")){
@@ -201,14 +220,18 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
             editor.apply(); //changed from commit
             //finish();
 
-            Intent in = new Intent(Physiolists.this, MainActivity.class);
+            Intent in = new Intent(TrainerMain.this, MainActivity.class);
 
+            startActivity(in);
+        }
+        if (st.equals("Exercise List")){
+            Intent in = new Intent(TrainerMain.this, ExList.class);
             startActivity(in);
         }
         if (st.equals("My Profile")){
 
 
-            Intent in = new Intent(Physiolists.this, Profiles.class);
+            Intent in = new Intent(TrainerMain.this, Profiles.class);
             in.putExtra("name",phyName);
             startActivity(in);
         }
@@ -216,14 +239,25 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
         if (st.equals("Add New Exercise")){
 
 
-            Intent in = new Intent(Physiolists.this, NewEx.class);
+            Intent in = new Intent(TrainerMain.this, NewEx.class);
             in.putExtra("name",phyName);
             startActivity(in);
         }
+        if (st.equals("Credits")){
 
+
+            Intent in = new Intent(TrainerMain.this, Credits.class);
+            //in.putExtra("name",phyName);
+            startActivity(in);
+        }
         return true;
-    }
 
+    }
+    /**
+     *on click on messages button - opens alertdialog and send content to all client using firebase
+     * <p>
+     *
+     */
     public void sqr(View view) {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
 
@@ -250,7 +284,9 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
             public void onClick(final DialogInterface dialogInterface, int i) {
                 final EditText edmsg2 = customLayout.findViewById(R.id.edmsg);
                 final String msg = edmsg2.getText().toString();
-
+                if (msg.equals(""))
+                    Toast.makeText(TrainerMain.this, "You need to fill everything for that" , Toast.LENGTH_LONG).show();
+                else{
                 refClients.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -267,9 +303,9 @@ public class Physiolists extends AppCompatActivity implements AdapterView.OnItem
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
-                Toast.makeText(Physiolists.this, "Message Sent!" , Toast.LENGTH_LONG).show();
+                Toast.makeText(TrainerMain.this, "Message Sent!" , Toast.LENGTH_LONG).show();
                 dialogInterface.cancel();
-            }
+            }}
         });
 
         builder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {

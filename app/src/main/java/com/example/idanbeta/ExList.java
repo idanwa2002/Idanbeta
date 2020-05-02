@@ -29,7 +29,11 @@ String str;
     ArrayList<String> xList = new ArrayList<>();
     Information n;
     TextView tvex;
-
+    /**
+     * on activity created - fills listview with all exercises
+     * <p>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +64,11 @@ String str;
             }
         });
     }
-
+    /**
+     * on listview clicked - opens dialog with info and link
+     * <p>
+     *
+     */
     //@Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -132,12 +140,20 @@ String str;
         android.app.AlertDialog adb = builder.create();
         adb.show();
     }
-
+    /**
+     * on bottom button clicked - finishes activity
+     * <p>
+     *
+     */
     public void ex(View view) {
         finish();
     }
 
-
+    /**
+     * on (type) button clicked - fills listview with only exercises of that type
+     * <p>
+     *
+     */
     public void cardio(View view) {
         tvex.setText("Cardio Exercises:");
         refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -185,7 +201,11 @@ String str;
             }
         });
     }
-
+    /**
+     * on cardio button clicked - fills listview with only exercises of that type
+     * <p>
+     *
+     */
     public void arms(View view) {
         tvex.setText("Arms Exercises:");
         refExinfo.addListenerForSingleValueEvent(new ValueEventListener() {

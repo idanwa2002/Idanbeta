@@ -2,7 +2,11 @@ package com.example.idanbeta;
 
 import java.sql.Date;
 import java.sql.Time;
-
+/**
+ * @author		Idan Wasserblat <uxrcky@gmail.com>
+ * @version	1.6
+ * class fback that saves the client's feedback using fb,date,time,task,done,rate,cName
+ */
 class Fback {
     private String fb,cName;
     private String time;

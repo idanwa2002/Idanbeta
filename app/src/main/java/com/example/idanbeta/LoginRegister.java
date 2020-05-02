@@ -26,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -42,19 +40,26 @@ import static com.example.idanbeta.FBref.refClients;
 import static com.example.idanbeta.FBref.refPhyios;
 //import static com.example.idanbeta.FBref.refUser;
 
-public class Lognreg extends AppCompatActivity {
+
+
+public class LoginRegister extends AppCompatActivity {
     TextView tVtitle, tVregister, tVnameview,inv;
     EditText eTname, eTphone, eTemail, eTpass;
     CheckBox cBstayconnect;
     Button btn;
     CheckBox cb;
     Spinner sp;
-    String str1, str2;
     String name, phone, email, password, uid, phy = "none";
     User userdb;
     Boolean stayConnect, registered, firstrun, cbphy, isPhysio, perm;
     public FirebaseAuth mAuth;
-    String[] Parray;
+
+    /**
+     * On activity start - filling up spinner and expacting login
+     * <p>
+     *
+     */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +78,6 @@ public class Lognreg extends AppCompatActivity {
         inv=(TextView) findViewById(R.id.inv);
         cb=(CheckBox) findViewById(R.id.cbx);
         sp=(Spinner) findViewById(R.id.spn);
-        //sp.setOnItemSelectedListener(this);
-        //addItemsOnSpinner(); //************
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -83,8 +86,6 @@ public class Lognreg extends AppCompatActivity {
 
         final List<String> pList = new ArrayList<>();
 
-        //DatabaseReference r = FirebaseDatabase.getInstance().getReference("Game");
-        //r.child("Teams").addListenerForSingleValueEvent(new ValueEventListener()
         refPhyios.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -93,7 +94,7 @@ public class Lognreg extends AppCompatActivity {
                     User u = ds.getValue(User.class);
                     pList.add(u.getName());
                 }
-                ArrayAdapter<String> Adp = new ArrayAdapter<>(Lognreg.this, R.layout.support_simple_spinner_dropdown_item, pList);
+                ArrayAdapter<String> Adp = new ArrayAdapter<>(LoginRegister.this, R.layout.support_simple_spinner_dropdown_item, pList);
                 sp.setAdapter(Adp);
             }
 
@@ -105,7 +106,6 @@ public class Lognreg extends AppCompatActivity {
 
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         firstrun=settings.getBoolean("firstRun",false);
-        //Toast.makeText(this, ""+firstrun, Toast.LENGTH_SHORT).show();
         if (firstrun) {
             tVtitle.setText("Register");
             eTname.setVisibility(View.VISIBLE);
@@ -130,21 +130,16 @@ public class Lognreg extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-        //Boolean isChecked=false;
+
         Boolean isChecked=settings.getBoolean("stayConnect",false);
         isPhysio=settings.getBoolean("is physio",false);
-        //isChecked = false;
         isPhysio = false;
         if (refAuth.getCurrentUser()!=null && isChecked ) {
             stayConnect=true;
-            Intent si = new Intent(Lognreg.this,Passing.class);
+            Intent si = new Intent(LoginRegister.this,Passing.class);
             startActivity(si);
         }
-        //if (refAuth.getCurrentUser()!=null && isChecked && !isPhysio ) {
-         //   stayConnect=true;
-         //   Intent si = new Intent(Lognreg.this,Passing.class);
-         //   startActivity(si);
-        //}
+
     }
 
     /**
@@ -156,7 +151,10 @@ public class Lognreg extends AppCompatActivity {
         super.onPause();
         if (stayConnect) finish();
     }
-
+    /**
+     * setting screen up for registering
+     * <p>
+     */
     private void regoption() {
         SpannableString ss = new SpannableString("Don't have an account?  Register here!");
         ClickableSpan span = new ClickableSpan() {
@@ -177,6 +175,12 @@ public class Lognreg extends AppCompatActivity {
         tVregister.setText(ss);
         tVregister.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    /**
+     * if he chose to login from the registering screen
+     * <p>
+     *
+     */
 
     private void logoption() {
         SpannableString ss = new SpannableString("Already have an account?  Login here!");
@@ -208,7 +212,7 @@ public class Lognreg extends AppCompatActivity {
      */
     public void logorreg(View view) {
         if ((eTemail.getText().toString().equals(""))||(eTpass.getText().toString().equals(""))) {
-            Toast.makeText(Lognreg.this, "You need to fill everything to continue!", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginRegister.this, "You need to fill everything to continue!", Toast.LENGTH_LONG).show();
         }
         else {
         email=eTemail.getText().toString();
@@ -228,30 +232,24 @@ public class Lognreg extends AppCompatActivity {
                                 isPhysio=settings.getBoolean("is physio",false);
                                 isPhysio=false;
                                 Log.d("MainActivity", "signinUserWithEmail:success");
-                                Toast.makeText(Lognreg.this, "Login Success", Toast.LENGTH_LONG).show();
-                                //if (isPhysio ) {
-                                    //Intent si = new Intent(Lognreg.this,Physiolists.class);
-                                    //startActivity(si);
-                                //}
-                                //if (!isPhysio ) {
-                                    Intent si = new Intent(Lognreg.this,Passing.class);
-                                    startActivity(si);
-                                //}
+                                Toast.makeText(LoginRegister.this, "Login Success", Toast.LENGTH_LONG).show();
+                                Intent si = new Intent(LoginRegister.this,Passing.class);
+                                startActivity(si);
+
                             } else {
                                 Log.d("MainActivity", "signinUserWithEmail:fail");
-                                Toast.makeText(Lognreg.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginRegister.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
         } else {
             if ((eTemail.getText().toString().equals(""))||(eTpass.getText().toString().equals(""))||(eTname.getText().toString().equals(""))||(eTphone.getText().toString().equals(""))) {
-                Toast.makeText(Lognreg.this, "You need to fill everything to continue!", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginRegister.this, "You need to fill everything to continue!", Toast.LENGTH_LONG).show();
             }
             else{
             name=eTname.getText().toString();
             phone=eTphone.getText().toString();
             cbphy=cb.isChecked();
-            //phy=String.valueOf(sp.getSelectedItem());
             if (cb.isChecked()){
                 phy="none"; perm = true;
             }
@@ -275,25 +273,25 @@ public class Lognreg extends AppCompatActivity {
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
                                 userdb=new User(name,email,phone,uid,phy,perm);
-                                //refUser.child(name).setValue(userdb);
-                                Toast.makeText(Lognreg.this, "Successful registration", Toast.LENGTH_LONG).show();
+
+                                Toast.makeText(LoginRegister.this, "Successful registration", Toast.LENGTH_LONG).show();
                                 if (cbphy){
                                     refPhyios.child(name).setValue(userdb);
 
-                                    Intent si = new Intent(Lognreg.this,Passing.class);
+                                    Intent si = new Intent(LoginRegister.this,Passing.class);
                                     startActivity(si);
                                 }
                                 else {
                                     refClients.child(name).setValue(userdb);
-                                    Intent si = new Intent(Lognreg.this,Passing.class);
+                                    Intent si = new Intent(LoginRegister.this,Passing.class);
                                     startActivity(si);
                                 }
                             } else {
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                    Toast.makeText(Lognreg.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginRegister.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
                                 else {
                                     Log.w("MainActivity", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(Lognreg.this, "User create failed.",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginRegister.this, "User create failed.",Toast.LENGTH_LONG).show();
                                 }
                             }
                         }

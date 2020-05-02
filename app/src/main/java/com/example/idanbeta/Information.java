@@ -1,5 +1,9 @@
 package com.example.idanbeta;
-
+/**
+ * @author		Idan Wasserblat <uxrcky@gmail.com>
+ * @version	1.6
+ * class information that saves info about exercises using tname,url,info and type
+ */
 class Information {
     private String info, tName,url,type;
 

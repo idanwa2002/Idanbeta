@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -43,11 +44,15 @@ public class Addnew extends AppCompatActivity {
     Spinner sp,sp2;
     String advice, tName,url="tbd",c,p;
     String time,days;
-    //private Date date;
     int num;
 
     Date date = Calendar.getInstance().getTime();
     String thisdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+    /**
+     * gets date and returns the same date plus 1 day
+     * <p>
+     *
+     */
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     static public String addOneDay(String date) {
@@ -57,6 +62,11 @@ public class Addnew extends AppCompatActivity {
     ArrayList<String> tList = new ArrayList<>(), mList = new ArrayList<>(), hList = new ArrayList<>();
     ArrayList<String> dList = new ArrayList<>();
 
+    /**
+     * on activity create - fills spinner with exercises from firebase
+     * <p>
+     *
+     */
 
     @RequiresApi(api = Build.VERSION_CODES.O) ///////////////
     @Override
@@ -78,18 +88,11 @@ public class Addnew extends AppCompatActivity {
         c=cName;
         p=pName;
 
-        /*b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment timePicker = new TimePickerFragment();
-                timePicker.show(getSupportFragmentManager(),"time picker");
-            }
-        });*/
+
 
         dList.clear();
         int j = 9;
         while (j>0){
-            //String s = String.valueOf(j);
             dList.add(j + " days");
             j--;
         }
@@ -103,7 +106,6 @@ public class Addnew extends AppCompatActivity {
                 tList.clear();
                 for(DataSnapshot data : dataSnapshot.getChildren()){
                     Information information = data.getValue(Information.class);
-                    //waitValues.add(user);
                     tList.add(information.gettName());
 
                 }
@@ -121,9 +123,13 @@ public class Addnew extends AppCompatActivity {
 
 
         tv.setText("Set a new task for " + cName);
-        //tv.setText(thisdate+"        " + addOneDay(thisdate) + "   " +date );
     }
 
+    /**
+     * on click setting time button - opens alertdialog with time picker fragment
+     * <p>
+     *
+     */
 
     public void chooseTime(View view) {
         TimePickerDialog picker = new TimePickerDialog(Addnew.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
@@ -138,42 +144,31 @@ public class Addnew extends AppCompatActivity {
         picker.show();
 
     }
+    /**
+     * on submit button clicked - putting the data set by the trainer and sending it to the client using firebase
+     * <p>
+     *
+     */
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void enter(View view) throws ParseException {
         days=String.valueOf((String) sp2.getSelectedItem());
         num =  Character.getNumericValue(days.charAt(0));
-        //SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        //String formattedDate = sdf.format(date);
-        //String dt = "2008-01-01";  // Start date
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        //Calendar ca = Calendar.getInstance();
-        //ca.setTime(sdf.parse(thisdate));
-        //ca.add(Calendar.DATE, 1);  // number of days to add
-        //thisdate = sdf.format(ca.getTime());  // dt is now the new date
         tName=String.valueOf(sp.getSelectedItem());
         advice=et2.getText().toString();
-        Exercises ex;// = new Exercises(p,c,time,advice,tName,thisdate,true);
-        int j=0,ddd=num;
-        while (j<(ddd)){
-            thisdate=addOneDay(thisdate);
-            ex = new Exercises(p,c,time,advice,tName,thisdate,true);
-            refTasks.child( thisdate+ " " + tName + " " + c).setValue(ex);
-            j++;
+        Exercises ex;
+        if (advice.equals("")||time.equals(""))
+            Toast.makeText(Addnew.this, "You need to fill everything for that" , Toast.LENGTH_LONG).show();
+        else {
+            int j = 0, ddd = num;
+            while (j < (ddd)) {
+                thisdate = addOneDay(thisdate);
+                ex = new Exercises(p, c, time, advice, tName, thisdate, true);
+                refTasks.child(thisdate + " " + tName + " " + c).setValue(ex);
+                j++;
+            }
         }
-
-   //     Intent in = new Intent(Addnew.this, Clientpage.class);
-     //   in.putExtra("name",c);
-       // in.putExtra("pname",p);
-        //startActivity(in);
-        finish();
     }
 
-
-
-    /*@Override
-    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-        tv.setText(i + ":" + i1);
-    }*/
 
 }

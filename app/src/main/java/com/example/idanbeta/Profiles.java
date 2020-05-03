@@ -42,7 +42,7 @@ import static com.example.idanbeta.FBref.refPhyios;
 public class Profiles extends AppCompatActivity {
 
     String name, email, uid,p,c;
-    TextView tVnameview, tVemailview, tVuidview,tv;
+    TextView tVnameview, tVemailview, tVuidview,tv,set;
     CheckBox cBconnectview;
     Button ib2;
     ImageView ib;
@@ -62,6 +62,7 @@ public class Profiles extends AppCompatActivity {
         tVnameview=(TextView)findViewById(R.id.tVnameview);
         tVemailview=(TextView)findViewById(R.id.tVemailview);
         tVuidview=(TextView)findViewById(R.id.tVuidview);
+        set=(TextView)findViewById(R.id.set);
         tv=findViewById(R.id.title);
         ib=findViewById(R.id.ib);
         String cName=getIntent().getStringExtra("name");
@@ -108,6 +109,7 @@ public class Profiles extends AppCompatActivity {
                         tVuidview.setText(u.getPhone());
                         tv.setText("Your Profile");
                         ib.setVisibility(View.VISIBLE);
+                        set.setVisibility(View.VISIBLE);
 
 
                     }

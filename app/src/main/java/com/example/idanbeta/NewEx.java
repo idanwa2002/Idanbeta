@@ -55,13 +55,14 @@ public class NewEx extends AppCompatActivity {
      */
 
     public void sub(View view) {
+        t = String.valueOf(s.getSelectedItem());
+        n = et.getText().toString();
+        i = et2.getText().toString();
+        u = et3.getText().toString();
         if (n.equals("")||u.equals("")||i.equals(""))
             Toast.makeText(NewEx.this, "You need to fill everything for that" , Toast.LENGTH_LONG).show();
         else {
-            t = String.valueOf(s.getSelectedItem());
-            n = et.getText().toString();
-            i = et2.getText().toString();
-            u = et3.getText().toString();
+
             Information information = new Information(n, u, i, t);
             refExinfo.child(n).setValue(information);
             Toast.makeText(NewEx.this, "Exercise added!", Toast.LENGTH_LONG).show();

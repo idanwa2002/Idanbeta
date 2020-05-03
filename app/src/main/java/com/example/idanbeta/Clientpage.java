@@ -169,7 +169,7 @@ public class Clientpage extends AppCompatActivity implements AdapterView.OnItemC
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(Clientpage.this, "Feel free to show off your progress for your trainer" , Toast.LENGTH_LONG).show();
+                //Toast.makeText(Clientpage.this, "Feel free to show off your progress for your trainer" , Toast.LENGTH_LONG).show();
 
             }
         });

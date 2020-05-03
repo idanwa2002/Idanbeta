@@ -167,6 +167,7 @@ public class Addnew extends AppCompatActivity {
                 refTasks.child(thisdate + " " + tName + " " + c).setValue(ex);
                 j++;
             }
+            finish();
         }
     }
 
